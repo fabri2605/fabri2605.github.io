@@ -5,38 +5,51 @@ const RegisterForm = (props) => {
     const [name, setName] = React.useState('');
     const [pass, setPass] = React.useState('');
     const [touched, setTouched] = React.useState(false);
+    const [touchedp, setTouchedp] = React.useState(false);
 
-    const submitHandler = (e) =>{
+    const submitHandler = (e) => {
         setTouched(true);
         e.preventDefault();
-        if(valid){
+        if (namevalid && passvalid) {
             console.log('Registred!');
             props.submitionHandler(name, pass);
         }
     };
 
-    const setNameHandler = (e) =>{
-        setTouched(true);
+    const setNameHandler = (e) => {
         setName(e.target.value);
     };
-    const setPassHandler = (e) =>{
-        setTouched(true);
+    const setPassHandler = (e) => {
         setPass(e.target.value);
     };
-    const valid = name.length>4 && pass.length>4;
+    const blurNameHandler = () => {
+        setTouched(true);
+    };
+    const blurPassHandler = () => {
+        setTouchedp(true);
+    };
+    const namevalid = name.length>3;
+    const passvalid = pass.length>3;
+
     return (
         <form onSubmit={submitHandler} className={classes.myform}>
             <div>
                 <label>Username:</label>
-                <input type='text' onChange={setNameHandler} value={name}/>
+                <input
+                    type='text'
+                    onBlur={blurNameHandler}
+                    onChange={setNameHandler}
+                    value={name}
+                />
             </div>
 
             <div>
                 <label>Password:</label>
-                <input type='password' onChange={setPassHandler} value={pass}/>
+                <input type='password' onBlur={blurPassHandler} onChange={setPassHandler} value={pass} />
             </div>
             <button type='submit'>Register</button>
-            {!valid && touched && <p>Invalid entry!</p>}
+            {!namevalid && touched && <p>Invalid username!</p>}
+            {!passvalid && namevalid && touchedp && <p>Invalid password!</p>}
         </form>
     );
 };

@@ -10,7 +10,7 @@ const SpoltifyApp = () => {
     const [artists, setArtists] = React.useState([]);
     const [isLoading, setIsLoading] = React.useState(false);
 
-    async function fetchSongs() {
+    const fetching = React.useCallback(async function () {
         setIsRegistring(false);
         setIsLoading(true);
         const options = {
@@ -57,18 +57,41 @@ const SpoltifyApp = () => {
             })
             .catch((err) => console.error(err));
         setIsLoading(false);
+    },[]);
+    
+    async function registration(name, pass) {
+        const object = { Name: name, Password: pass };
+        setIsRegistring(false);
+        setIsLoading(true);
+        try {
+            const response = fetch(
+                'https://react-http-467cc-default-rtdb.firebaseio.com/users.json',
+                {
+                    method: 'POST',
+                    body: JSON.stringify(object),
+                    headers: { 'Content-Type': 'application/json' },
+                }
+            );
+
+            if (response.ok) {
+                setUser(name);
+            }
+        } catch (e) {
+            console.log(e.message);
+        }
+        setIsLoading(false);
+        console.log(User);
     }
 
+    React.useEffect(() => {
+        fetching();
+    }, [fetching]);
+
     const throwSongs = (e) => {
-        console.log(e.target.value);
         const filtredSongs = songs.filter((u) => u.author === e.target.value);
         setSongs(filtredSongs);
     };
 
-    const registration = (name, pass) => {
-        setIsRegistring(false);
-        setUser(name);
-    };
     const registrationn = () => {
         setIsRegistring(true);
     };
@@ -80,7 +103,9 @@ const SpoltifyApp = () => {
     return (
         <React.Fragment>
             <nav className={classes.nav}>
-                <button className={classes.fetchbutton} onClick={fetchSongs}>Fetch Songs</button>
+                <button className={classes.fetchbutton} onClick={fetching}>
+                    Fetch Songs
+                </button>
                 {!User ? (
                     <button
                         onClick={registrationn}
@@ -93,7 +118,12 @@ const SpoltifyApp = () => {
                         <button className={classes.user} disabled>
                             {User}
                         </button>
-                        <button onClick={logoutHandler} className={classes.logout}>Log Out</button>
+                        <button
+                            onClick={logoutHandler}
+                            className={classes.logout}
+                        >
+                            Log Out
+                        </button>
                     </>
                 )}
             </nav>
