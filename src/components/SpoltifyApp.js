@@ -2,6 +2,7 @@ import React from 'react';
 import SongComp from './SongComp';
 import classes from './SongComp.module.css';
 import RegisterForm from './RegisterForm';
+alert('This page is not prepared to be excecuted on phones!');
 
 const SpoltifyApp = () => {
     const [isRegistring, setIsRegistring] = React.useState(false);

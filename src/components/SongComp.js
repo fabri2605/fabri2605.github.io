@@ -8,10 +8,17 @@ const SongComp = (props) => {
         second = second < 10 ? '0' + Math.floor(second) : Math.floor(second);
         return minute + ':' + second;
     }
+    const imgClickHandler = (e) => {
+        alert('title: '+props.song.name+' artist: '+props.song.author);
+    };
     return (
         <div className={classes.cartel}>
             <p>{secondsToString(props.song.duration)}</p>
-            <img alt={props.song.name} src={props.song.img}></img>
+            <img
+                onClick={imgClickHandler}
+                alt={props.song.name}
+                src={props.song.img}
+            ></img>
             <h3 className={classes.title}>{props.song.name}</h3>
             <h5 className={classes.artist}>{props.song.author}</h5>
             <a href={props.song.url}>Listen it on Spoltify!</a>
