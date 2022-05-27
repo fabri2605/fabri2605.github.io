@@ -1,6 +1,7 @@
 import React from 'react';
 import classes from './SongComp.module.css';
 const SongComp = (props) => {
+    const aud = document.getElementsByClassName('player');
     function secondsToString(seconds) {
         var minute = Math.floor((seconds / 60) % 60);
         minute = minute < 10 ? '0' + minute : minute;
@@ -9,7 +10,16 @@ const SongComp = (props) => {
         return minute + ':' + second;
     }
     const imgClickHandler = (e) => {
-        alert('title: '+props.song.name+' artist: '+props.song.author);
+        alert(props.song.preview);
+    };
+    const playing = (e) => {
+        for (const cual of aud) {
+            if(cual.id === props.song.name){
+
+            }else{
+                cual.pause();
+            }
+        }
     };
     return (
         <div className={classes.cartel}>
@@ -21,7 +31,15 @@ const SongComp = (props) => {
             ></img>
             <h3 className={classes.title}>{props.song.name}</h3>
             <h5 className={classes.artist}>{props.song.author}</h5>
-            <a href={props.song.url}>Listen it on Spoltify!</a>
+            <a href={props.song.url.spotify}>Listen it on Spoltify!</a>
+            <audio
+                id={props.song.name}
+                className='player'
+                onPlay={playing}
+                controls
+            >
+                <source src={props.song.preview} type='audio/mpeg' />
+            </audio>
         </div>
     );
 };
