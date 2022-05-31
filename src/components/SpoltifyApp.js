@@ -5,108 +5,179 @@ import RegisterForm from './RegisterForm';
 
 const SpoltifyApp = () => {
     const [isRegistring, setIsRegistring] = React.useState(false);
-    const [User, setUser] = React.useState('');
+    const [User, setUser] = React.useState(localStorage.getItem('isLogged'));
     const [songs, setSongs] = React.useState([]);
+    const [filtredSongs, setFiltredSongs] = React.useState([]);
     const [artists, setArtists] = React.useState([]);
     const [isLoading, setIsLoading] = React.useState(false);
+    const [hasError, setHasError] = React.useState('');
+    const pageTitle = React.createRef();
+    const localUser = localStorage.getItem('isLogged');
+    const localFilter = localStorage.getItem('filtred');
+    
+    const fetching = React.useCallback(
+        async function () {
+            setIsRegistring(false);
+            if(pageTitle.current.style === 'left'){
+            };
+            if (!localUser) {
+                setFiltredSongs('');
+                localStorage.setItem('filtred', '');
+                setHasError('You need to register first!');
+                return null;
+            } else if (songs.length > 0 && filtredSongs.length === 0) {
+                setFiltredSongs(songs);
+                return null;
+            } else if (filtredSongs.length > 0 && songs.length > 0) {
+                if (localFilter) {
+                    setFiltredSongs(
+                        songs.filter((u) => u.author === localFilter)
+                    );
+                } else {
+                    setFiltredSongs(songs);
+                }
+                return null;
+            }
+            setIsRegistring(false);
+            setIsLoading(true);
 
-    const fetching = async function () {
-        setIsRegistring(false)
-        setIsLoading(true);
+            const options = {
+                method: 'GET',
+                headers: {
+                    'X-RapidAPI-Host': 'spotify23.p.rapidapi.com',
+                    'X-RapidAPI-Key':
+                        'fbf0c29f17msh2ea8c42d058efb8p1cb340jsn87a4660d26d6',
+                },
+            };
 
-        const options = {
-            method: 'GET',
-            headers: {
-                'X-RapidAPI-Host': 'spotify23.p.rapidapi.com',
-                'X-RapidAPI-Key':
-                    'fbf0c29f17msh2ea8c42d058efb8p1cb340jsn87a4660d26d6',
-            },
-        };
-
-        fetch(
-            'https://spotify23.p.rapidapi.com/playlist_tracks/?id=37i9dQZF1DX4Wsb4d7NKfP&offset=0&limit=100',
-            options
-        )
-            .then((response) => response.json())
-            .then((response) => {
-                const songis = [];
-                const artis = [];
-                for (const key in response) {
-                    if (key === 'items') {
-                        for (const song of response[key]) {
-                            console.log(song.track.external_urls);
-                            songis.push({
-                                id: song.track.id,
-                                name: song.track.name,
-                                authorUrl: song.track.artists[0].uri,
-                                author: song.track.artists[0].name,
-                                preview: song.track.preview_url,
-                                img: song.track.album.images[0].url,
-                                url: song.track.external_urls,
-                                duration: song.track.duration_ms * 0.001,
-                            });
-                            artis.push(song.track.artists[0].name);
+            await fetch(
+                'https://spotify23.p.rapidapi.com/playlist_tracks/?id=37i9dQZF1DX4Wsb4d7NKfP&offset=0&limit=100',
+                options
+            )
+                .then((response) => response.json())
+                .then((response) => {
+                    const songis = [];
+                    const artis = [];
+                    for (const key in response) {
+                        if (key === 'items') {
+                            for (const song of response[key]) {
+                                songis.push({
+                                    id: song.track.id,
+                                    name: song.track.name,
+                                    authorUrl: song.track.artists[0].uri,
+                                    author: song.track.artists[0].name,
+                                    preview: song.track.preview_url,
+                                    img: song.track.album.images[0].url,
+                                    url: song.track.external_urls,
+                                    duration: song.track.duration_ms * 0.001,
+                                });
+                                artis.push(song.track.artists[0].name);
+                            }
                         }
                     }
-                }
-                var result = [];
-                artis.forEach((item)=> {
-                    if (result.indexOf(item) < 0) {
-                        result.push(item);
+                    var result = [];
+                    artis.forEach((item) => {
+                        if (result.indexOf(item) < 0) {
+                            result.push(item);
+                        }
+                    });
+                    setArtists(result);
+                    setSongs(songis);
+                    if (localFilter === 'All' || !localFilter) {
+                        console.log('localFilter == All || ""');
+                        setFiltredSongs(songis);
+                    } else {
+                        setFiltredSongs(
+                            songis.filter((u) => u.author === localFilter)
+                        );
                     }
+                })
+                .catch((err) => {
+                    console.error(err.message);
+                    setHasError(err.message);
                 });
-                setArtists(result);
-                setSongs(songis);
-            })
-            .catch((err) => console.error(err));
-        setIsLoading(false);
-    };
+            setIsLoading(false);
+        },
+        [User, localFilter, songs]
+    );
 
-    async function registration(name, pass) {
-        const object = { Name: name, Password: pass };
+    React.useEffect(() => {
+        
+        if (localUser === !!User) {
+            setUser(localUser);
+        }
+        if (localFilter) {
+            fetching();
+        }
+    }, []);
+
+    async function registration(name, pass, isRegistred) {
         setIsRegistring(false);
         setIsLoading(true);
-        try {
-            fetch(
-                'https://react-http-467cc-default-rtdb.firebaseio.com/users.json',
-                {
-                    method: 'POST',
-                    body: JSON.stringify(object),
-                    headers: { 'Content-Type': 'application/json' },
-                }
-            );
+        setHasError('');
+        if (!isRegistred) {
+            const object = { Name: name, Password: pass };
 
-        } catch (e) {
-            console.log(e.message);
+            try {
+                await fetch(
+                    'https://react-http-467cc-default-rtdb.firebaseio.com/users.json',
+                    {
+                        method: 'POST',
+                        body: JSON.stringify(object),
+                        headers: { 'Content-Type': 'application/json' },
+                    }
+                );
+            } catch (e) {
+                console.log(e.message);
+            }
+        } else {
+            pageTitle.current.innerHTML ='Welcome back '+ name ;
         }
         setUser(name);
+        localStorage.setItem('isLogged', name);
         setIsLoading(false);
     }
 
-    const throwSongs = (e) => {
-        const filtredSongs = songs.filter((u) => u.author === e.target.value);
-        setSongs(filtredSongs);
+    const showForm = () => {
+        setIsRegistring(true);
     };
 
-    const registrationn = () => {
-        setIsRegistring(true);
+    const throwSongs = (e) => {
+        if (e.target.value === 'All') {
+            setFiltredSongs(songs);
+            localStorage.setItem('filtred', '');
+        } else {
+            const filtredSongss = songs.filter(
+                (u) => u.author === e.target.value
+            );
+            setFiltredSongs(filtredSongss);
+            localStorage.setItem('filtred', e.target.value);
+        }
     };
 
     const logoutHandler = () => {
         setUser('');
+        setFiltredSongs([]);
+        localStorage.setItem('isLogged', '');
+        localStorage.setItem('filtred', '');
+        pageTitle.current = 'MyMusicPage';
     };
-
+    
     return (
         <React.Fragment>
-            <nav className={classes.nav}>
+            <nav
+                className={
+                    isLoading
+                        ? classes.loading + ' ' + classes.nav
+                        : classes.nav
+                }
+            >
+                <p ref={pageTitle} /* className={algo ? '' : ''} */>MyMusicPage</p>
                 <button className={classes.fetchbutton} onClick={fetching}>
                     Fetch Songs
                 </button>
                 {!User ? (
-                    <button
-                        onClick={registrationn}
-                        className={classes.fetchbutton}
-                    >
+                    <button onClick={showForm} className={classes.fetchbutton}>
                         Register / Login
                     </button>
                 ) : (
@@ -124,11 +195,14 @@ const SpoltifyApp = () => {
                 )}
             </nav>
             {!isRegistring ? (
-                <div>
-                    {songs.length > 0 && (
+                <div className={isLoading ? classes.loading : ''}>
+                    {filtredSongs.length > 0 && User && (
                         <div className={classes.filter}>
                             <label>Filter by artist:</label>
                             <select onChange={throwSongs}>
+                                <option key='All' value='All'>
+                                    All
+                                </option>
                                 {artists.map((e) => (
                                     <option key={e} value={e}>
                                         {e}
@@ -138,13 +212,24 @@ const SpoltifyApp = () => {
                         </div>
                     )}
                     <div className={classes.general}>
-                        {isLoading && <p>Loading...</p>}
-                        {songs.length === 0 && !isLoading && !isRegistring && (
-                            <p>Songs list is empty, fetch to see some music!</p>
-                        )}
+                        {isLoading && !hasError && <p>Loading...</p>}
+                        {!hasError &&
+                            filtredSongs.length === 0 &&
+                            !isLoading &&
+                            !isRegistring && (
+                                <p id='nonFetchMsg'>
+                                    Songs list is empty, fetch to see some
+                                    music!
+                                </p>
+                            )}
+                        {hasError && <p>{hasError}</p>}
                         {!isLoading &&
                             !isRegistring &&
-                            songs.map((e) => <SongComp key={e.id} song={e} />)}
+                            filtredSongs.length > 0 &&
+                            User &&
+                            filtredSongs.map((e) => (
+                                <SongComp key={e.id} song={e} />
+                            ))}
                     </div>
                 </div>
             ) : (

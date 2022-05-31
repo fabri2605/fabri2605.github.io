@@ -1,3 +1,4 @@
+
 .general {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
@@ -19,6 +20,10 @@
     font-size: large;
     text-align: left;
     margin: 0 0 0 3rem;
+    width: 50%;
+}
+.filter select{
+    width: 50%;
 }
 label {
     margin-right: 10px;
@@ -36,6 +41,9 @@ select option {
     border-radius: 5px;
     font-size: large;
 }
+.loading{
+    cursor: wait;
+}
 /* 
 *
 *
@@ -50,7 +58,7 @@ CARTEl
     width: 100%;
     height: 100%;
 }
-.cartel audio{
+.cartel audio {
     padding-top: 15px;
 }
 .cartel img {
@@ -58,7 +66,7 @@ CARTEl
     max-width: 300px;
     transition: 0.5s;
     opacity: 50%;
-    padding: 10px 10px 10px 10px;
+    padding: 10px;
     background-color: rgba(255, 255, 255, 0);
 }
 .cartel img:hover {
@@ -70,10 +78,13 @@ CARTEl
 .cartel .title {
     margin: 0;
     padding: 0;
+    text-transform: capitalize;
 }
 .cartel .artist {
     margin: 0;
     padding: 0;
+    color: rgb(86, 0, 144);
+    text-transform: capitalize;
 }
 .cartel a {
     color: rgba(2, 206, 2, 0.815);
@@ -95,7 +106,6 @@ NAV
     height: 60px;
     width: 100%;
     text-align: right;
-    display: block;
 }
 .nav .user {
     background-color: rgba(4, 32, 240, 0.622);
@@ -119,6 +129,7 @@ NAV
     transition: 1s;
 }
 .nav .logout:hover {
+    cursor: no-drop;
     background-color: rgb(255, 0, 0);
     box-shadow: 0px 0px 100px 20px rgb(248, 15, 15);
 }
@@ -134,6 +145,23 @@ NAV
     background-color: green;
     box-shadow: 0px 0px 100px 20px rgb(255, 2, 255);
 }
+.nav p {
+    color: white;
+    background-color: rgba(127, 255, 212, 055, 255);
+    margin: 14px 0 0 10px;
+    float: left;
+    font-family: 'Secular One', sans-serif;
+    font-size: 140%;
+    background: -webkit-linear-gradient(#00b3ff, #00060900);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-transform: capitalize;
+    transition: 1s;
+}
+.nav p:hover {
+    cursor: default;
+    background-color:  rgb(255, 2, 255);
+}
 /* 
 *
 *
@@ -142,8 +170,8 @@ FORM
 *
  */
 .myform {
-    width: 400px;
-    margin: 10% 10% 10% 30%;
+    margin: 10% 30% 10% 30%;
+    min-width: 260px;
     background-color: rgb(56, 4, 104);
     font-size: large;
     color: rgb(245, 245, 245);
@@ -153,6 +181,7 @@ FORM
     transition: 1s;
 }
 .myform input {
+    width: 50%;
     margin: 5px 5px 5px 5px;
     font-size: large;
 }
@@ -172,4 +201,62 @@ FORM
     color: red;
     margin: 0;
     padding: 0;
+}
+
+@media screen and (max-width: 1070px){
+    .cartel img {
+        max-width: 250px;
+    }
+    .general{
+        grid-template-columns: 1fr 1fr;
+    }
+    .general p {
+        font-size: large;
+        grid-column: 1/3;
+    }
+}
+@media screen and (max-width: 651px){
+    .general{
+        grid-template-columns: 1fr ;
+        width: 80%;
+        justify-content: center;
+        margin-left: 14%;
+    }
+    .cartel img {
+        max-width: 80%;
+    }
+    .nav p{
+        justify-content: center;
+    }
+    .nav button{
+        justify-content: center;
+    }
+    .nav{
+        height: 40%;
+    }
+    .myform {
+        margin: 15% 15% 5% 15%;}
+}
+@media screen and (max-width: 370px){
+    .myform {
+        margin: 3px;
+    }
+    .nav p{
+        float: right;
+    }
+    .general{
+        width: 80%;
+        justify-content: center;
+        margin-left: 14%;
+    }
+    .cartel{
+        width: 100%;
+        justify-content: center;
+    }
+    .cartel img{
+        width: 90%;
+    }
+    .cartel audio{
+        width: 70%;
+    }
 }

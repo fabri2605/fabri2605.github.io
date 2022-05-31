@@ -10,13 +10,19 @@ const SongComp = (props) => {
         return minute + ':' + second;
     }
     const imgClickHandler = (e) => {
-        alert(props.song.preview);
+        for (const cual of aud) {
+            if (cual.id === props.song.name) {
+                cual.play();
+            } else {
+                cual.pause();
+            }
+        }
     };
     const playing = (e) => {
         for (const cual of aud) {
-            if(cual.id === props.song.name){
-
-            }else{
+            cual.volume = 0.5;
+            if (cual.id === props.song.name) {
+            } else {
                 cual.pause();
             }
         }
@@ -30,8 +36,12 @@ const SongComp = (props) => {
                 src={props.song.img}
             ></img>
             <h3 className={classes.title}>{props.song.name}</h3>
-            <h5 className={classes.artist}>{props.song.author}</h5>
-            <a href={props.song.url.spotify}>Listen it on Spoltify!</a>
+            <a href={props.song.authorUrl}>
+                <h5 className={classes.artist}>{props.song.author}</h5>
+            </a>
+            <div>
+                <a href={props.song.url.spotify}>Listen it on Spoltify!</a>
+            </div>
             <audio
                 id={props.song.name}
                 className='player'

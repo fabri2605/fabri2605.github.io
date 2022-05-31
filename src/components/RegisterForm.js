@@ -6,21 +6,41 @@ const RegisterForm = (props) => {
     const [pass, setPass] = React.useState('');
     const [touched, setTouched] = React.useState(false);
     const [touchedp, setTouchedp] = React.useState(false);
+    const [hasError, setHasError] = React.useState(false);
 
-    const submitHandler = (e) => {
+    const submitHandler = async function (e) {
         setTouched(true);
         e.preventDefault();
         if (namevalid && passvalid) {
-            console.log('Registred!');
-            props.submitionHandler(name, pass);
+            await fetch(
+                'https://react-http-467cc-default-rtdb.firebaseio.com/users.json'
+            )
+                .then((response) => response.json())
+                .then((response) => {
+                    let found = false;
+                    for (const key in response) {
+                        if (response[key].Name === name) {
+                            if (response[key].Password !== pass) {
+                                setHasError(true);
+                                return null;
+                            } else {
+                                props.submitionHandler(name, pass, true);
+                                found = true;
+                            }
+                        }
+                    }
+                    if (!hasError && found === false) {
+                        props.submitionHandler(name, pass, false);
+                    }
+                });
         }
     };
 
     const setNameHandler = (e) => {
-        setName(e.target.value);
+        setName(e.target.value.trim());
     };
     const setPassHandler = (e) => {
-        setPass(e.target.value);
+        setPass(e.target.value.trim());
     };
     const blurNameHandler = () => {
         setTouched(true);
@@ -28,8 +48,8 @@ const RegisterForm = (props) => {
     const blurPassHandler = () => {
         setTouchedp(true);
     };
-    const namevalid = name.length>3;
-    const passvalid = pass.length>3;
+    const namevalid = name.length > 3;
+    const passvalid = pass.length > 3;
 
     return (
         <form onSubmit={submitHandler} className={classes.myform}>
@@ -45,11 +65,17 @@ const RegisterForm = (props) => {
 
             <div>
                 <label>Password:</label>
-                <input type='password' onBlur={blurPassHandler} onChange={setPassHandler} value={pass} />
+                <input
+                    type='password'
+                    onBlur={blurPassHandler}
+                    onChange={setPassHandler}
+                    value={pass}
+                />
             </div>
             <button type='submit'>Register</button>
             {!namevalid && touched && <p>Invalid username!</p>}
             {!passvalid && namevalid && touchedp && <p>Invalid password!</p>}
+            {hasError && <p>User already in use || incorrect password!</p>}
         </form>
     );
 };
