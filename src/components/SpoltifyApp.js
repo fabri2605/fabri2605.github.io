@@ -2,6 +2,7 @@ import React from 'react';
 import SongComp from './SongComp';
 import classes from './SongComp.module.css';
 import RegisterForm from './RegisterForm';
+import MyLoader from './Loader/MyLoader';
 
 const SpoltifyApp = () => {
     const [isRegistring, setIsRegistring] = React.useState(false);
@@ -14,12 +15,12 @@ const SpoltifyApp = () => {
     const pageTitle = React.createRef();
     const localUser = localStorage.getItem('isLogged');
     const localFilter = localStorage.getItem('filtred');
-    
+
     const fetching = React.useCallback(
         async function () {
             setIsRegistring(false);
-            if(pageTitle.current.style === 'left'){
-            };
+            if (pageTitle.current.style === 'left') {
+            }
             if (!localUser) {
                 setFiltredSongs('');
                 localStorage.setItem('filtred', '');
@@ -44,9 +45,9 @@ const SpoltifyApp = () => {
             const options = {
                 method: 'GET',
                 headers: {
-                    'X-RapidAPI-Host': 'spotify23.p.rapidapi.com',
                     'X-RapidAPI-Key':
-                        'fbf0c29f17msh2ea8c42d058efb8p1cb340jsn87a4660d26d6',
+                        '684f76f0f3msh78c59f0291915e8p1bc6c9jsn6b37b43baa62',
+                    'X-RapidAPI-Host': 'spotify23.p.rapidapi.com',
                 },
             };
 
@@ -76,6 +77,7 @@ const SpoltifyApp = () => {
                         }
                     }
                     var result = [];
+                    artis.sort();
                     artis.forEach((item) => {
                         if (result.indexOf(item) < 0) {
                             result.push(item);
@@ -102,7 +104,6 @@ const SpoltifyApp = () => {
     );
 
     React.useEffect(() => {
-        
         if (localUser === !!User) {
             setUser(localUser);
         }
@@ -131,7 +132,7 @@ const SpoltifyApp = () => {
                 console.log(e.message);
             }
         } else {
-            pageTitle.current.innerHTML ='Welcome back '+ name ;
+            pageTitle.current.innerHTML = 'Welcome back ' + name;
         }
         setUser(name);
         localStorage.setItem('isLogged', name);
@@ -162,7 +163,7 @@ const SpoltifyApp = () => {
         localStorage.setItem('filtred', '');
         pageTitle.current = 'MyMusicPage';
     };
-    
+
     return (
         <React.Fragment>
             <nav
@@ -172,7 +173,9 @@ const SpoltifyApp = () => {
                         : classes.nav
                 }
             >
-                <p ref={pageTitle} /* className={algo ? '' : ''} */>MyMusicPage</p>
+                <p ref={pageTitle} /* className={algo ? '' : ''} */>
+                    French Drillin
+                </p>
                 <button className={classes.fetchbutton} onClick={fetching}>
                     Fetch Songs
                 </button>
@@ -211,8 +214,12 @@ const SpoltifyApp = () => {
                             </select>
                         </div>
                     )}
+                    {isLoading && !hasError && (
+                        <div>
+                            <MyLoader></MyLoader>
+                        </div>
+                    )}
                     <div className={classes.general}>
-                        {isLoading && !hasError && <p>Loading...</p>}
                         {!hasError &&
                             filtredSongs.length === 0 &&
                             !isLoading &&
