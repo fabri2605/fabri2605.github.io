@@ -43,7 +43,7 @@ const SongComp = (props) => {
                 alt={props.song.name}
                 src={props.song.img}
             ></img>
-            <div className={classes.anim}>{played && <MyExtra />}</div>
+            {played && <MyExtra />}
             <h3 className={classes.title}>{props.song.name}</h3>
             <a href={props.song.authorUrl}>
                 <h5 className={classes.artist}>{props.song.author}</h5>
@@ -51,6 +51,7 @@ const SongComp = (props) => {
             <div className={classes.spol}>
                 <a href={props.song.url.spotify}>Listen it on Spoltify!</a>
             </div>
+            {/*  <p>{props.song.name}</p> */}
             <audio
                 onPause={Thunderbolt}
                 id={props.song.name}
@@ -59,10 +60,6 @@ const SongComp = (props) => {
             >
                 <source src={props.song.preview} type='audio/mpeg' />
             </audio>
-
-            {/* <div id='audio-player-container'>
-                <button id='play-icon'>p</button>
-            </div> */}
         </div>
     );
 };

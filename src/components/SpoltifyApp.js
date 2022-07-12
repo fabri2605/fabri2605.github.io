@@ -57,6 +57,7 @@ const SpoltifyApp = () => {
             )
                 .then((response) => response.json())
                 .then((response) => {
+                    console.log(response);
                     const songis = [];
                     const artis = [];
                     for (const key in response) {
@@ -216,7 +217,7 @@ const SpoltifyApp = () => {
                     )}
                     {isLoading && !hasError && (
                         <div>
-                            <MyLoader></MyLoader>
+                            <MyLoader/>
                         </div>
                     )}
                     <div className={classes.general}>
