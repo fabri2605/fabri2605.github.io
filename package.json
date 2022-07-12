@@ -1,6 +1,6 @@
 {
-  "homepage": "https://fabri2605.github.io/music",
-  "name": "music",
+  "homepage": "https://fabri2605.github.io/music_page",
+  "name": "music_page",
   "version": "0.1.0",
   "private": true,
   "dependencies": {

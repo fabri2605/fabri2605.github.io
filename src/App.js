@@ -10,8 +10,8 @@ const SpoltifyApp = React.lazy(() => import('./components/SpoltifyApp'));
 function App() {
     const Routing = () => {
         let routes = useRoutes([
-            { path: '/music', element: <SpoltifyApp /> },
-            { path: '/', element: <Navigate to='/music' /> },
+            { path: '/music_page', element: <SpoltifyApp /> },
+            { path: '*', element: <Navigate to='/music_page' /> },
             // ...
         ]);
         return routes;
@@ -19,7 +19,8 @@ function App() {
 
     return (
         <div className='App'>
-            <Suspense
+            <SpoltifyApp />
+            {/* <Suspense
                 fallback={
                     <div className='centered'>
                         <MyExtra />
@@ -28,7 +29,7 @@ function App() {
             ></Suspense>
             <Router>
                 <Routing />
-            </Router>
+            </Router> */}
         </div>
     );
 }
