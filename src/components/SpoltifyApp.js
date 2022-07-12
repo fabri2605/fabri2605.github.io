@@ -3,6 +3,7 @@ import SongComp from './SongComp';
 import classes from './SongComp.module.css';
 import RegisterForm from './RegisterForm';
 import MyLoader from './Loader/MyLoader';
+import Nav from './nav/Nav';
 
 const SpoltifyApp = () => {
     const [isRegistring, setIsRegistring] = React.useState(false);
@@ -12,15 +13,13 @@ const SpoltifyApp = () => {
     const [artists, setArtists] = React.useState([]);
     const [isLoading, setIsLoading] = React.useState(false);
     const [hasError, setHasError] = React.useState('');
-    const pageTitle = React.createRef();
+
     const localUser = localStorage.getItem('isLogged');
     const localFilter = localStorage.getItem('filtred');
 
     const fetching = React.useCallback(
         async function () {
             setIsRegistring(false);
-            if (pageTitle.current.style === 'left') {
-            }
             if (!localUser) {
                 setFiltredSongs('');
                 localStorage.setItem('filtred', '');
@@ -133,7 +132,7 @@ const SpoltifyApp = () => {
                 console.log(e.message);
             }
         } else {
-            pageTitle.current.innerHTML = 'Welcome back ' + name;
+            alert('Welcome back ' + name);
         }
         setUser(name);
         localStorage.setItem('isLogged', name);
@@ -162,42 +161,17 @@ const SpoltifyApp = () => {
         setFiltredSongs([]);
         localStorage.setItem('isLogged', '');
         localStorage.setItem('filtred', '');
-        pageTitle.current = 'MyMusicPage';
     };
 
     return (
         <React.Fragment>
-            <nav
-                className={
-                    isLoading
-                        ? classes.loading + ' ' + classes.nav
-                        : classes.nav
-                }
-            >
-                <p ref={pageTitle} /* className={algo ? '' : ''} */>
-                    French Drillin
-                </p>
-                <button className={classes.fetchbutton} onClick={fetching}>
-                    Fetch Songs
-                </button>
-                {!User ? (
-                    <button onClick={showForm} className={classes.fetchbutton}>
-                        Register / Login
-                    </button>
-                ) : (
-                    <>
-                        <button className={classes.user} disabled>
-                            {User}
-                        </button>
-                        <button
-                            onClick={logoutHandler}
-                            className={classes.logout}
-                        >
-                            Log Out
-                        </button>
-                    </>
-                )}
-            </nav>
+            <Nav
+                loading={isLoading}
+                fetching={fetching}
+                showForm={showForm}
+                logoutHandler={logoutHandler}
+                user={User}
+            />
             {!isRegistring ? (
                 <div className={isLoading ? classes.loading : ''}>
                     {filtredSongs.length > 0 && User && (
@@ -217,7 +191,7 @@ const SpoltifyApp = () => {
                     )}
                     {isLoading && !hasError && (
                         <div>
-                            <MyLoader/>
+                            <MyLoader />
                         </div>
                     )}
                     <div className={classes.general}>
