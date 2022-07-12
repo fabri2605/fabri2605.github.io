@@ -10,8 +10,8 @@ const SpoltifyApp = React.lazy(() => import('./components/SpoltifyApp'));
 function App() {
     const Routing = () => {
         let routes = useRoutes([
-            { path: '/music_page', element: <SpoltifyApp /> },
-            { path: '/', element: <Navigate to='/music_page' /> },
+            { path: '/music', element: <SpoltifyApp /> },
+            { path: '/', element: <Navigate to='/music' /> },
             // ...
         ]);
         return routes;
