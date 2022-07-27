@@ -4,6 +4,7 @@ import classes from './SongComp.module.css';
 import RegisterForm from './RegisterForm';
 import MyLoader from './Loader/MyLoader';
 import Nav from './nav/Nav';
+import './extra/Transition.css';
 
 const SpoltifyApp = () => {
     const [isRegistring, setIsRegistring] = React.useState(false);
@@ -195,23 +196,24 @@ const SpoltifyApp = () => {
                         </div>
                     )}
                     <div className={classes.general}>
-                        {!hasError &&
-                            filtredSongs.length === 0 &&
-                            !isLoading &&
-                            !isRegistring && (
-                                <p id='nonFetchMsg'>
-                                    Songs list is empty, fetch to see some
-                                    music!
-                                </p>
-                            )}
-                        {hasError && <p>{hasError}</p>}
+                            {!hasError &&
+                                filtredSongs.length === 0 &&
+                                !isLoading &&
+                                !isRegistring && (
+                                    <p>
+                                        Songs list is empty, fetch to see some
+                                        music!
+                                    </p>
+                                )}
+                            {hasError && <p>{hasError}</p>}
                         {!isLoading &&
                             !isRegistring &&
                             filtredSongs.length > 0 &&
-                            User &&
-                            filtredSongs.map((e) => (
-                                <SongComp key={e.id} song={e} />
-                            ))}
+                            User && (
+                                    filtredSongs.map((e) => (
+                                        <SongComp key={e.id} song={e} />
+                                    ))
+                            )}
                     </div>
                 </div>
             ) : (

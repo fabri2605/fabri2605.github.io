@@ -1,6 +1,7 @@
 import React from 'react';
 import classes from './SongComp.module.css';
 import MyExtra from './extra/MyExtra';
+import './extra/Transition.css'
 const SongComp = (props) => {
     const aud = document.getElementsByClassName('player');
     const [played, setPlayed] = React.useState(false);
@@ -36,31 +37,31 @@ const SongComp = (props) => {
         setPlayed(!document.getElementById(props.song.name).paused);
     };
     return (
-        <div className={classes.cartel}>
-            <p>{secondsToString(props.song.duration)}</p>
-            <img
-                onClick={imgClickHandler}
-                alt={props.song.name}
-                src={props.song.img}
-            ></img>
-            {played && <MyExtra />}
-            <h3 className={classes.title}>{props.song.name}</h3>
-            <a href={props.song.authorUrl}>
-                <h5 className={classes.artist}>{props.song.author}</h5>
-            </a>
-            <div className={classes.spol}>
-                <a href={props.song.url.spotify}>Listen it on Spoltify!</a>
+            <div className={classes.cartel}>
+                <p className='numbers'>{secondsToString(props.song.duration)}</p>
+                <img
+                    onClick={imgClickHandler}
+                    alt={props.song.name}
+                    src={props.song.img}
+                ></img>
+                {played && <MyExtra />}
+                <h3 className={classes.title}>{props.song.name}</h3>
+                <a href={props.song.authorUrl}>
+                    <h5 className={classes.artist}>{props.song.author}</h5>
+                </a>
+                <div className={classes.spol}>
+                    <a href={props.song.url.spotify}>Listen it on Spoltify!</a>
+                </div>
+                {/*  <p>{props.song.name}</p> */}
+                <audio
+                    onPause={Thunderbolt}
+                    id={props.song.name}
+                    className='player'
+                    onPlay={playing}
+                >
+                    <source src={props.song.preview} type='audio/mpeg' />
+                </audio>
             </div>
-            {/*  <p>{props.song.name}</p> */}
-            <audio
-                onPause={Thunderbolt}
-                id={props.song.name}
-                className='player'
-                onPlay={playing}
-            >
-                <source src={props.song.preview} type='audio/mpeg' />
-            </audio>
-        </div>
     );
 };
 
