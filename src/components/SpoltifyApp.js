@@ -5,6 +5,7 @@ import RegisterForm from './RegisterForm';
 import MyLoader from './Loader/MyLoader';
 import Nav from './nav/Nav';
 import './extra/Transition.css';
+import Swal from 'sweetalert2';
 
 const SpoltifyApp = () => {
     const [isRegistring, setIsRegistring] = React.useState(false);
@@ -114,8 +115,8 @@ const SpoltifyApp = () => {
     }, []);
 
     async function registration(name, pass, isRegistred) {
-        setIsRegistring(false);
         setIsLoading(true);
+        setIsRegistring(false);
         setHasError('');
         if (!isRegistred) {
             const object = { Name: name, Password: pass };
@@ -132,8 +133,17 @@ const SpoltifyApp = () => {
             } catch (e) {
                 console.log(e.message);
             }
+            Swal.fire(
+                'Registered succesfully!',
+                'Hope you enjoy the page!',
+                'success'
+            );
         } else {
-            alert('Welcome back ' + name);
+            Swal.fire(
+                'Welcome back ' + name + ' !',
+                'Logged succesfully!',
+                'success'
+            );
         }
         setUser(name);
         localStorage.setItem('isLogged', name);
@@ -162,6 +172,7 @@ const SpoltifyApp = () => {
         setFiltredSongs([]);
         localStorage.setItem('isLogged', '');
         localStorage.setItem('filtred', '');
+        Swal.fire('Good bye!', 'Logged out succesfully!');
     };
 
     return (
@@ -174,7 +185,7 @@ const SpoltifyApp = () => {
                 user={User}
             />
             {!isRegistring ? (
-                <div className={isLoading ? classes.loading : ''}>
+                <div className={isLoading ? classes.loading : 'white-p'}>
                     {filtredSongs.length > 0 && User && (
                         <div className={classes.filter}>
                             <label>Filter by artist:</label>
@@ -195,25 +206,21 @@ const SpoltifyApp = () => {
                             <MyLoader />
                         </div>
                     )}
+                    {!hasError &&
+                        filtredSongs.length === 0 &&
+                        !isLoading &&
+                        !isRegistring && (
+                            <p>Songs list is empty, load to see them all!</p>
+                        )}
+                    {hasError && <p>{hasError}</p>}
                     <div className={classes.general}>
-                            {!hasError &&
-                                filtredSongs.length === 0 &&
-                                !isLoading &&
-                                !isRegistring && (
-                                    <p>
-                                        Songs list is empty, fetch to see some
-                                        music!
-                                    </p>
-                                )}
-                            {hasError && <p>{hasError}</p>}
                         {!isLoading &&
                             !isRegistring &&
                             filtredSongs.length > 0 &&
-                            User && (
-                                    filtredSongs.map((e) => (
-                                        <SongComp key={e.id} song={e} />
-                                    ))
-                            )}
+                            User &&
+                            filtredSongs.map((e) => (
+                                <SongComp key={e.id} song={e} />
+                            ))}
                     </div>
                 </div>
             ) : (

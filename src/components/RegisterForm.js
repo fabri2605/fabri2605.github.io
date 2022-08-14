@@ -1,5 +1,6 @@
 import React from 'react';
 import classes from './SongComp.module.css';
+import CryptoJS from 'crypto-js';
 
 const RegisterForm = (props) => {
     const [name, setName] = React.useState('');
@@ -23,10 +24,9 @@ const RegisterForm = (props) => {
                             if (response[key].Password !== pass) {
                                 setHasError(true);
                                 return null;
-                            } else {
-                                props.submitionHandler(name, pass, true);
-                                found = true;
                             }
+                            props.submitionHandler(name, pass, true);
+                            found = true;
                         }
                     }
                     if (!hasError && found === false) {
@@ -40,7 +40,8 @@ const RegisterForm = (props) => {
         setName(e.target.value.trim());
     };
     const setPassHandler = (e) => {
-        setPass(e.target.value.trim());
+        const cipher = CryptoJS.AES.encrypt('PASSWORD', e.target.value.trim());
+        setPass(cipher);
     };
     const blurNameHandler = () => {
         setTouched(true);

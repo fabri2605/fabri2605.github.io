@@ -14,7 +14,7 @@ const Nav = (props) => {
                 French Drillin
             </p>
             <button className={classes.fetchbutton} onClick={props.fetching}>
-                Fetch Songs
+                Load Songs
             </button>
             {!props.user ? (
                 <button onClick={props.showForm} className={classes.fetchbutton}>

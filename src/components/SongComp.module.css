@@ -5,14 +5,9 @@
     margin: 30px 6% 0 6%;
     gap: 40px;
     justify-content: space-evenly;
-    color: rgb(163, 163, 163);
     text-align: center;
 }
 
-.general p {
-    font-size: large;
-    grid-column: 2/3;
-}
 .filter {
     color: rgb(159, 159, 159);
     font-size: large;
@@ -135,7 +130,7 @@ NAV
 }
 .nav .user {
     background-color: rgb(104, 177, 255);
-    border-radius: 6px;
+    border-radius: 4px;
     border-color: black;
     color: rgb(0, 0, 0);
     margin: 15px 19px 15px 0;
@@ -147,7 +142,7 @@ NAV
 }
 .nav .logout {
     background-color: rgba(227, 36, 36, 0.606);
-    border-radius: 6px;
+    border-radius: 3px;
     color: rgb(255, 255, 255);
     margin: 15px 19px 15px 0;
     font-size: large;
@@ -156,11 +151,10 @@ NAV
 .nav .logout:hover {
     background-color: rgb(233, 232, 232);
     color: black;
-    box-shadow: 0px 0px 50px 10px rgb(248, 15, 15);
 }
 .nav .fetchbutton {
     background-color: rgba(10, 210, 27, 0.728);
-    border-radius: 6px;
+    border-radius: 3px;
     border: white 1px ;
     color: rgb(255, 255, 255);
     margin: 15px 19px 15px 0;
@@ -174,10 +168,10 @@ NAV
 .nav p {
     color: white;
     background-color: rgba(127, 255, 212, 055, 255);
-    margin: 14px 0 0 10px;
+    margin: 12px 0 0 10px;
     float: left;
     font-family: 'Secular One', sans-serif;
-    font-size: 140%;
+    font-size: 170%;
     background: -webkit-linear-gradient(#5680ff, #00060900);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
