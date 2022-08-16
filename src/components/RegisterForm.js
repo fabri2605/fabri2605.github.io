@@ -9,6 +9,9 @@ const RegisterForm = (props) => {
     const [touchedp, setTouchedp] = React.useState(false);
     const [hasError, setHasError] = React.useState(false);
 
+    const key = CryptoJS.enc.Utf8.parse('b75524255a7f54d2726a951bb39204df');
+    const iv = CryptoJS.enc.Utf8.parse('1583288699248111');
+
     const submitHandler = async function (e) {
         setTouched(true);
         e.preventDefault();
@@ -29,7 +32,7 @@ const RegisterForm = (props) => {
                             found = true;
                         }
                     }
-                    if (!hasError && found === false) {
+                    if (!found) {
                         props.submitionHandler(name, pass, false);
                     }
                 });
@@ -40,8 +43,9 @@ const RegisterForm = (props) => {
         setName(e.target.value.trim());
     };
     const setPassHandler = (e) => {
-        const cipher = CryptoJS.AES.encrypt('PASSWORD', e.target.value.trim());
-        setPass(cipher);
+        /* const decipher = CryptoJS.AES.decrypt(cipher, key); */
+        const cipher = CryptoJS.AES.encrypt(e.target.value.trim(), 'PASSWORD');
+        setPass(e.target.value.trim());
     };
     const blurNameHandler = () => {
         setTouched(true);
