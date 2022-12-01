@@ -47,7 +47,7 @@ const SpoltifyApp = () => {
                 method: 'GET',
                 headers: {
                     'X-RapidAPI-Key':
-                        '684f76f0f3msh78c59f0291915e8p1bc6c9jsn6b37b43baa62',
+                        '8cc775c702msheb62061cb0adb6fp1957fcjsna06b77403272',
                     'X-RapidAPI-Host': 'spotify23.p.rapidapi.com',
                 },
             };
@@ -64,17 +64,20 @@ const SpoltifyApp = () => {
                     for (const key in response) {
                         if (key === 'items') {
                             for (const song of response[key]) {
-                                songis.push({
-                                    id: song.track.id,
-                                    name: song.track.name,
-                                    authorUrl: song.track.artists[0].uri,
-                                    author: song.track.artists[0].name,
-                                    preview: song.track.preview_url,
-                                    img: song.track.album.images[0].url,
-                                    url: song.track.external_urls,
-                                    duration: song.track.duration_ms * 0.001,
-                                });
-                                artis.push(song.track.artists[0].name);
+                                if (song.track) {
+                                    songis.push({
+                                        id: song.track.id,
+                                        name: song.track.name,
+                                        authorUrl: song.track.artists[0].uri,
+                                        author: song.track.artists[0].name,
+                                        preview: song.track.preview_url,
+                                        img: song.track.album.images[0].url,
+                                        url: song.track.external_urls,
+                                        duration:
+                                            song.track.duration_ms * 0.001,
+                                    });
+                                    artis.push(song.track.artists[0].name);
+                                }
                             }
                         }
                     }
@@ -95,10 +98,6 @@ const SpoltifyApp = () => {
                             songis.filter((u) => u.author === localFilter)
                         );
                     }
-                })
-                .catch((err) => {
-                    console.error(err.message);
-                    setHasError(err.message);
                 });
             setIsLoading(false);
         },
@@ -218,9 +217,10 @@ const SpoltifyApp = () => {
                             !isRegistring &&
                             filtredSongs.length > 0 &&
                             User &&
-                            filtredSongs.map((e) => (
-                                <SongComp key={e.id} song={e} />
-                            ))}
+                            filtredSongs.map((e) => {
+                                console.log(e);
+                                return <SongComp key={e.id} song={e} />;
+                            })}
                     </div>
                 </div>
             ) : (
