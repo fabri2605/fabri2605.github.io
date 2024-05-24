@@ -47,17 +47,18 @@ const SpoltifyApp = () => {
                 method: 'GET',
                 headers: {
                     'X-RapidAPI-Key':
-                        '8cc775c702msheb62061cb0adb6fp1957fcjsna06b77403272',
-                    'X-RapidAPI-Host': 'spotify23.p.rapidapi.com',
+                        process.env.REACT_APP_X_RapidAPI_Key,
+                    'X-RapidAPI-Host': process.env.REACT_APP_X_RapidAPI_Host,
                 },
             };
 
             await fetch(
-                'https://spotify23.p.rapidapi.com/playlist_tracks/?id=37i9dQZF1DX4Wsb4d7NKfP&offset=0&limit=100',
+                process.env.REACT_APP_MUSIC_LINK,
                 options
             )
                 .then((response) => response.json())
                 .then((response) => {
+
                     console.log(response);
                     const songis = [];
                     const artis = [];
@@ -122,7 +123,7 @@ const SpoltifyApp = () => {
 
             try {
                 await fetch(
-                    'https://react-http-467cc-default-rtdb.firebaseio.com/users.json',
+                    process.env.REACT_APP_FIRE_POST_LINK,
                     {
                         method: 'POST',
                         body: JSON.stringify(object),
@@ -218,7 +219,6 @@ const SpoltifyApp = () => {
                             filtredSongs.length > 0 &&
                             User &&
                             filtredSongs.map((e) => {
-                                console.log(e);
                                 return <SongComp key={e.id} song={e} />;
                             })}
                     </div>

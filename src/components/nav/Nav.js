@@ -1,4 +1,4 @@
-import classes from '../SongComp.module.css';
+import classes from './Nav.module.css';
 import React from 'react';
 const Nav = (props) => {
 
@@ -10,7 +10,7 @@ const Nav = (props) => {
                 props.loading ? classes.loading + ' ' + classes.nav : classes.nav
             }
         >
-            <p ref={pageTitle} /* className={algo ? '' : ''} */>
+            <p ref={pageTitle} className={classes.logo}>
                 French Drillin
             </p>
             <button className={classes.fetchbutton} onClick={props.fetching}>

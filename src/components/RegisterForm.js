@@ -17,7 +17,7 @@ const RegisterForm = (props) => {
         e.preventDefault();
         if (namevalid && passvalid) {
             await fetch(
-                'https://react-http-467cc-default-rtdb.firebaseio.com/users.json'
+                process.env.REACT_APP_FIRE_POST_LINK
             )
                 .then((response) => response.json())
                 .then((response) => {
