@@ -210,7 +210,7 @@ const SpoltifyApp = () => {
                         filtredSongs.length === 0 &&
                         !isLoading &&
                         !isRegistring && (
-                            <p>Songs list is empty, load to see them all!</p>
+                            <p style={{ margin: '80px' }}>Songs list is empty, load to see them all!</p>
                         )}
                     {hasError && <p>{hasError}</p>}
                     <div className={classes.general}>
@@ -224,7 +224,10 @@ const SpoltifyApp = () => {
                     </div>
                 </div>
             ) : (
-                <RegisterForm submitionHandler={registration} />
+                <div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "50vh" }}>
+
+                    <RegisterForm submitionHandler={registration} />
+                </div>
             )}
         </React.Fragment>
     );

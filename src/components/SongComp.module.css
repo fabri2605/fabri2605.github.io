@@ -132,51 +132,6 @@ CARTEL
     }
 }
 
-/* 
-*
-*
-FORM
-*
-*
- */
-.myform {
-    margin: 10% 30% 10% 30%;
-    min-width: 260px;
-    background-color: rgb(56, 4, 104);
-    font-size: large;
-    color: rgb(245, 245, 245);
-    border-radius: 10px;
-    padding: 15px;
-    box-shadow: 0px 0px 20px 1px rgba(255, 255, 255, 0.302);
-    transition: 1s;
-}
-
-.myform input {
-    width: 50%;
-    margin: 5px 5px 5px 5px;
-    font-size: large;
-}
-
-.myform button {
-    background-color: rgba(58, 10, 10, 0.545);
-    border-radius: 6px;
-    color: rgb(243, 243, 243);
-    margin: 15px 0 15px 0;
-    font-size: large;
-    transition: 1s;
-}
-
-.myform button:hover {
-    background-color: rgba(255, 120, 18, 0.733);
-    color: black;
-}
-
-.myform p {
-    color: red;
-    margin: 0;
-    padding: 0;
-}
-
 @media screen and (max-width: 1070px) {
     .cartel img {
         max-width: 250px;
@@ -205,16 +160,9 @@ FORM
     .cartel img {
         max-width: 80%;
     }
-
-    .myform {
-        margin: 15% 15% 5% 15%;
-    }
 }
 
 @media screen and (max-width: 370px) {
-    .myform {
-        margin: 3px;
-    }
 
     .general {
         justify-content: center;

@@ -10,7 +10,7 @@
 .logo {
     position: absolute;
     left: 30px;
-
+    cursor: help;
     color: white;
     background-color: rgba(127, 255, 212, 055, 255);
     font-family: 'Secular One', sans-serif;
@@ -46,15 +46,16 @@ button:hover {
     margin: 20px;
 }
 
-.user {
-    margin: 20px;
-}
-
 .logout {
     margin: 20px;
 }
 
 
+.navButtons {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
 
 @media screen and (max-width: 651px) {
     .nav button {
@@ -65,5 +66,15 @@ button:hover {
         height: 100px;
     }
 
-    button {}
+    .navButtons {
+        width: 150px;
+    }
+
+    .fetchbutton {
+        margin: 5px;
+    }
+
+    .logout {
+        margin: 5px;
+    }
 }

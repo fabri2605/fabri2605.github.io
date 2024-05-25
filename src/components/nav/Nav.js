@@ -13,22 +13,20 @@ const Nav = (props) => {
             <p ref={pageTitle} className={classes.logo}>
                 French Drillin
             </p>
-            <button className={classes.fetchbutton} onClick={props.fetching}>
-                Load Songs
-            </button>
+
             {!props.user ? (
                 <button onClick={props.showForm} className={classes.fetchbutton}>
                     Register / Login
                 </button>
             ) : (
-                <>
-                    <button className={classes.user} disabled>
-                        {props.user}
+                <div className={classes.navButtons}>
+                    <button className={classes.fetchbutton} onClick={props.fetching}>
+                        Load Songs
                     </button>
                     <button onClick={props.logoutHandler} className={classes.logout}>
                         Log Out
                     </button>
-                </>
+                </div>
             )}
         </nav>
     );

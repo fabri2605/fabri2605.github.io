@@ -1,13 +1,15 @@
 import React from 'react';
-import classes from './SongComp.module.css';
+import classes from './Register.module.css';
 import CryptoJS from 'crypto-js';
+import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
 
 const RegisterForm = (props) => {
     const [name, setName] = React.useState('');
     const [pass, setPass] = React.useState('');
+    const [seeingPass, setSeeingPass] = React.useState(false);
     const [touched, setTouched] = React.useState(false);
     const [touchedp, setTouchedp] = React.useState(false);
-    const [hasError, setHasError] = React.useState(false);
+    const [hasError, setHasError] = React.useState('');
 
     const key = CryptoJS.enc.Utf8.parse('b75524255a7f54d2726a951bb39204df');
     const iv = CryptoJS.enc.Utf8.parse('1583288699248111');
@@ -25,7 +27,7 @@ const RegisterForm = (props) => {
                     for (const key in response) {
                         if (response[key].Name === name) {
                             if (response[key].Password !== pass) {
-                                setHasError(true);
+                                setHasError('Incorrect password!');
                                 return null;
                             }
                             props.submitionHandler(name, pass, true);
@@ -36,6 +38,8 @@ const RegisterForm = (props) => {
                         props.submitionHandler(name, pass, false);
                     }
                 });
+        } else {
+            setHasError("Please complete the login!")
         }
     };
 
@@ -58,7 +62,7 @@ const RegisterForm = (props) => {
 
     return (
         <form onSubmit={submitHandler} className={classes.myform}>
-            <div>
+            <div className={classes.user}>
                 <label>Username:</label>
                 <input
                     type='text'
@@ -68,19 +72,28 @@ const RegisterForm = (props) => {
                 />
             </div>
 
-            <div>
+            <div className={classes.pass}>
                 <label>Password:</label>
-                <input
-                    type='password'
-                    onBlur={blurPassHandler}
-                    onChange={setPassHandler}
-                    value={pass}
-                />
+                <div className={classes.seePass}>
+                    <input
+                        type={seeingPass ? 'text' : 'password'}
+                        onBlur={blurPassHandler}
+                        onChange={setPassHandler}
+                        value={pass}
+                    />
+                    <div>
+                        {seeingPass ?
+                            <FaRegEyeSlash onClick={() => setSeeingPass((e) => !e)} color='white' />
+                            :
+                            <FaRegEye onClick={() => setSeeingPass((e) => !e)} color='white' />
+                        }
+                    </div>
+                </div>
             </div>
-            <button type='submit'>Register</button>
+            <button type='submit' className={classes.submit}>Register</button>
             {!namevalid && touched && <p>Invalid username!</p>}
             {!passvalid && namevalid && touchedp && <p>Invalid password!</p>}
-            {hasError && <p>User already in use || incorrect password!</p>}
+            {hasError && <p>{hasError}</p>}
         </form>
     );
 };
